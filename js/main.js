@@ -2,9 +2,9 @@ mapboxgl.accessToken = 'pk.eyJ1IjoicW5uIiwiYSI6ImNsdDNxYzh2YjF6N2EybHBwZHM2endwZ
 let map = new mapboxgl.Map({
     container: 'map', // container ID
     style: 'mapbox://styles/mapbox/dark-v10',
-    zoom: 6.5, // starting zoom
-    minZoom: 6.5,
-    center: [-122.5565, 47.4114],
+    zoom: 6.25, // starting zoom
+    minZoom: 6.25,
+    center: [-121.6565, 47.4114],
 });
 
 map.on('load', () => {
@@ -78,7 +78,7 @@ reset.addEventListener('click', event => {
 
 // this event will trigger the map fly to its origin location and zoom level.
 map.flyTo({
-    zoom: 6.5,
+    zoom: 6.25,
     center: [-122.5565, 47.4114]
 });
 
