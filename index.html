@@ -39,7 +39,6 @@
 
     }
 
-
     /* social media icons */
     #info a {
       color: lightgray;
@@ -79,11 +78,6 @@
       font-size: 50px;
     }
 
-    #wildfire-chart {
-      top: 20px;
-    }
-
-
     #footer {
       position: absolute;
       bottom: 0px;
@@ -94,6 +88,11 @@
       color: lightgray;
     }
 
+    #slider { position: absolute; bottom: 20px; right: 300px; width: 30%; }
+
+    #legend { position: absolute; bottom: 20px; right: 20px; background-color: rgba(255, 255, 255, 0.8); padding: 10px; border-radius: 5px; font-family: Arial, sans-serif; }
+        .legend-item { display: flex; align-items: center; margin-bottom: 5px; }
+        .legend-color { width: 20px; height: 20px; margin-right: 5px; }
     </style>
     <script src="https://api.mapbox.com/mapbox-gl-js/v2.8.1/mapbox-gl.js"></script>
     <script src="js/d3.js"></script>
@@ -109,10 +108,10 @@
             <span id="reset"><a href="#">reset</a></span>
         </div>
         <div id="count" class="card">
-            <h5 id="desc"> # Wildfires in the displaying region</h5>
+            <h5 id="desc">Source: <a href='https://geo.wa.gov/datasets/wadnr::washington-large-fires-1973-2022/about'>Washington State Department of Natural Resources</a></h5>
+            <h5 id="desc"> # Wildfires in the year</h5>
             <p id="wildfire-count"></p>
         </div>
-        <div id="wildfire-chart"></div>
 
         <div id="footer">
             Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et
@@ -135,7 +134,35 @@
         </div>
     </div>
     <div id="map"></div>
-    <div id="legend"></div>
+    <input id="slider" type="range" min="1973" max="2022" step="1" value="1973">
+    <div id="legend">
+        <strong>Wildfire Size (Acres)</strong>
+        <div class="legend-item">
+            <div class="legend-color" style="background-color: #fee5d9;"></div>
+            0 - 1,000
+        </div>
+        <div class="legend-item">
+            <div class="legend-color" style="background-color: #fcbba1;"></div>
+            1,000 - 5,000
+        </div>
+        <div class="legend-item">
+            <div class="legend-color" style="background-color: #fc9272;"></div>
+            5,000 - 10,000
+        </div>
+        <div class="legend-item">
+            <div class="legend-color" style="background-color: #fb6a4a;"></div>
+            10,000 - 25,000
+        </div>
+        <div class="legend-item">
+            <div class="legend-color" style="background-color: #de2d26;"></div>
+            25,000 - 50,000
+        </div>
+        <div class="legend-item">
+            <div class="legend-color" style="background-color: #a50f15;"></div>
+            50,000+
+        </div>
+    </div>
+    </div>
     <script>
     mapboxgl.accessToken =
       'pk.eyJ1IjoicW5uIiwiYSI6ImNsdDNxYzh2YjF6N2EybHBwZHM2endwZnAifQ.Vf6vwhN46xhlkDOdRz1Mew';
@@ -164,8 +191,9 @@
                         'interpolate',
                         ['linear'],
                         ['get', 'ACRES'],
-                        1000, '#fee5d9',
-                        5000, '#fcae91',
+                        0, '#fee5d9',
+                        1000, '#fcbba1',
+                        5000, '#fc9272',
                         10000, '#fb6a4a',
                         25000, '#de2d26',
                         50000, '#a50f15'
@@ -174,6 +202,14 @@
                 }
             });
 
+            // Add event listener for the slider
+            const slider = document.getElementById('slider');
+            slider.addEventListener('input', (e) => {
+                const selectedYear = parseInt(e.target.value);
+                // Update the map data based on the selected year
+                // Implement your logic here to filter the data
+                map.setFilter('wildfire-layer', ['==', 'YEAR', selectedYear]);
+            });            
         });
 
 
